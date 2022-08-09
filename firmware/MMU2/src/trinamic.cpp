@@ -85,32 +85,32 @@ static constexpr chopper_timing_t chopper_timing = CHOPPER_TIMING;
   TMC5160Stepper pulley(AX_PUL_CS_PIN, R_SENSE);
   TMC5160Stepper selector(AX_SEL_CS_PIN, R_SENSE);
   TMC5160Stepper idler(AX_IDL_CS_PIN, R_SENSE); // Hardware SPI
-  static int8_t sgt_min = -64, sgt_max = 63; 
+  static int8_t sgt_min = -64, sgt_max = 63;
 #endif
 
 int8_t __sg_thr(AXIS axis)
 {
   int8_t stallguard=5;
-	switch (axis)
-	{
+  switch (axis)
+  {
   case AX_PUL:
     break;
-	case AX_SEL:
+  case AX_SEL:
     stallguard=(int8_t)constrain(TMC_SG_THR_SEL,sgt_min, sgt_max);
     break;
-	case AX_IDL:
+  case AX_IDL:
     stallguard=(int8_t)constrain(TMC_SG_THR_IDL,sgt_min, sgt_max);
-	  break;
+    break;
   default:
     break;
-	}
+  }
   return stallguard;
 }
 
 
 uint8_t tmc_usteps2mres(AXIS axis)
 {
-  switch(axis) 
+  switch(axis)
   {
     case AX_PUL: return 7;         //2 ustep
     case AX_SEL: return 7;         //2 ustep
@@ -123,18 +123,18 @@ uint8_t tmc_usteps2mres(AXIS axis)
 //Inverse motor direction
 uint8_t tmc_direction(AXIS axis)
 {
-  switch(axis) 
+  switch(axis)
   {
-    case AX_PUL: return PULLEY_DIR_INVERTING; 
-    case AX_SEL: return SELE_DIR_INVERTING; 
-    case AX_IDL: return IDLER_DIR_INVERTING; 
+    case AX_PUL: return PULLEY_DIR_INVERTING;
+    case AX_SEL: return SELE_DIR_INVERTING;
+    case AX_IDL: return IDLER_DIR_INVERTING;
     default: break;
   }
   return 0;
 }
 
 
-// void tmc_enable_stallguard(TMC5160Stepper &st) 
+// void tmc_enable_stallguard(TMC5160Stepper &st)
 // {
 //   st.en_pwm_mode(0);
 //   st.TCOOLTHRS(0x5FFF);
@@ -142,27 +142,27 @@ uint8_t tmc_direction(AXIS axis)
 // }
 
 
-void tmc_enable_stallguard(TMC2130Stepper &st) 
+void tmc_enable_stallguard(TMC2130Stepper &st)
 {
   st.en_pwm_mode(0);
   st.TCOOLTHRS(0x5FF);
   st.diag1_stall(true);
 }
 
-void tmc_disable_stallguard(TMC2130Stepper &st) 
+void tmc_disable_stallguard(TMC2130Stepper &st)
 {
   st.TCOOLTHRS(0);
   st.en_pwm_mode(1);
   st.diag1_stall(false);
 }
 
-void tmc_enable_stallguard(TMC2209Stepper &st) 
+void tmc_enable_stallguard(TMC2209Stepper &st)
 {
   st.TCOOLTHRS(0xFFFF);
   st.en_spreadCycle(false);
 }
 
-void tmc_disable_stallguard(TMC2209Stepper &st) 
+void tmc_disable_stallguard(TMC2209Stepper &st)
 {
   st.en_spreadCycle(true);
   st.TCOOLTHRS(0);
@@ -190,18 +190,18 @@ void SEL_DIAG_Callback(void)
 void tmc_pin_init()
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  __HAL_RCC_GPIOA_CLK_ENABLE();    
-  __HAL_RCC_GPIOB_CLK_ENABLE(); 		
-	GPIO_InitStruct.Pin  = GPIO_PIN_11|GPIO_PIN_8;				 //stpe pin
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  GPIO_InitStruct.Pin  = GPIO_PIN_11|GPIO_PIN_8;         //step pin
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
   GPIO_InitStruct.Pin  = GPIO_PIN_4;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);             
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   #if HAS_TMC_SPI
     GPIO_InitStruct.Pin  = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_10;      //spi CS pin
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);  
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_10, GPIO_PIN_SET);
   #endif
 
@@ -251,14 +251,14 @@ void tmc_disable_axis(AXIS axis)
 
     current_h = (int8_t)constrain(current_h,current_min, current_max);
     current_r = (int8_t)constrain(current_r,current_min, current_max);
-    
+
     TMC2208_n::GCONF_t gconf{0};
     gconf.pdn_disable = true;         // Use UART
     gconf.mstep_reg_select = true;    // Select microsteps with UART
     gconf.i_scale_analog = false;
-    gconf.en_spreadcycle = true; 
+    gconf.en_spreadcycle = true;
     gconf.shaft = tmc_direction(axis);
-    st.GCONF(gconf.sr); 
+    st.GCONF(gconf.sr);
 
     IHOLD_IRUN_t ihold_irun{0};
     ihold_irun.ihold = current_h;
@@ -291,7 +291,7 @@ void tmc_disable_axis(AXIS axis)
 #endif  // TMC2208
 
 #ifdef TMC2209
-  void tmc_init_axis(TMC2209Stepper &st, AXIS axis, TMC_MODE mode) 
+  void tmc_init_axis(TMC2209Stepper &st, AXIS axis, TMC_MODE mode)
   {
     uint8_t current_holding[3] = CURRENT_HOLDING;
     uint8_t current_running[3] = CURRENT_RUNNING;
@@ -327,7 +327,7 @@ void tmc_disable_axis(AXIS axis)
     st.IHOLD_IRUN(ihold_irun.sr);
 
     st.TPOWERDOWN(TMC_TPOWERDOWN);
-    
+
     TMC2208_n::PWMCONF_t pwmconf{0};
     pwmconf.pwm_lim = 12;
     pwmconf.pwm_reg = 8;
@@ -384,7 +384,7 @@ void tmc_disable_axis(AXIS axis)
     st.IHOLD_IRUN(ihold_irun.sr);
 
     st.TPOWERDOWN(TMC_TPOWERDOWN);
-    
+
     PWMCONF_t pwmconf{0};
     pwmconf.pwm_freq = 0b01; // f_pwm = 2/683 f_clk
     pwmconf.pwm_autoscale = true;
@@ -489,7 +489,7 @@ void tmc_init(TMC_MODE mode)
 {
   selector_step_pin_reset(); //PB4  stepper pin
   pulley_step_pin_reset();   //PA11
-  idler_step_pin_reset();	   //PA8
+  idler_step_pin_reset();     //PA8
 
   tmc_init_axis(pulley, AX_PUL, STEALTH_MODE);
   tmc_init_axis(selector, AX_SEL, mode);
@@ -514,7 +514,7 @@ uint16_t tmc_read_sg(TMC2209Stepper &st)
 template<typename TMC>
 uint8_t read_gstat(TMC &st)
 {
-	uint8_t retval = 0;
+  uint8_t retval = 0;
   retval = st.GSTAT();
   return (retval & 0x7);
 }
@@ -522,15 +522,15 @@ uint8_t read_gstat(TMC &st)
 uint8_t tmc_read_gstat()
 {
   uint32_t result = 0;
-	result |= read_gstat(pulley);
+  result |= read_gstat(pulley);
   result |= read_gstat(selector);
   result |= read_gstat(idler);
-	return result;
+  return result;
 }
 
 #ifdef TMC_DEBUG
 template<typename TMC>
-static bool test_connection(TMC &st) 
+static bool test_connection(TMC &st)
 {
   const uint8_t test_result = st.test_connection();
   switch (test_result) {

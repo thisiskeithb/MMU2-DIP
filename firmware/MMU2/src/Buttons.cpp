@@ -169,7 +169,7 @@ bool setupMenu()
 void settings_bowden_length()
 {
   // load filament above Bondtech gears to check correct length of bowden tube
-  if (!isFilamentLoaded)    
+  if (!isFilamentLoaded)
   {
     BowdenLength bowdenLength;
     load_filament_withSensor(false);
@@ -181,40 +181,40 @@ void settings_bowden_length()
       switch (buttonPressed())
       {
       case Btn::right:
-					if (!button_active || (((millis() - saved_millis) > 1000) && button_active)) {
-						if (bowdenLength.decrease()) {
-							set_pulley_dir_pull();
+          if (!button_active || (((millis() - saved_millis) > 1000) && button_active)) {
+            if (bowdenLength.decrease()) {
+              set_pulley_dir_pull();
 
-							for(auto i = bowdenLength.stepSize; i > 0; --i)
-							{
-								delayMicroseconds(1200);
-								do_pulley_step();
-							}
-						}
-					}
-					button_active = true;
-					break;
+              for(auto i = bowdenLength.stepSize; i > 0; --i)
+              {
+                delayMicroseconds(1200);
+                do_pulley_step();
+              }
+            }
+          }
+          button_active = true;
+          break;
       case Btn::left:
-					if (!button_active || (((millis() - saved_millis) > 1000) && button_active)) {
-						if(bowdenLength.increase()) {
-							set_pulley_dir_push();
+          if (!button_active || (((millis() - saved_millis) > 1000) && button_active)) {
+            if(bowdenLength.increase()) {
+              set_pulley_dir_push();
 
-							for(auto i = bowdenLength.stepSize; i > 0; --i)
-							{
-								delayMicroseconds(1200);
-								do_pulley_step();
-							}
-						}
-					}
-					button_active = true;
-					break; 
+              for(auto i = bowdenLength.stepSize; i > 0; --i)
+              {
+                delayMicroseconds(1200);
+                do_pulley_step();
+              }
+            }
+          }
+          button_active = true;
+          break;
       case Btn::middle:
           bowdenLength.~BowdenLength();
           break;
       default:
-					button_active = false;
-					saved_millis = millis();
-					break;
+          button_active = false;
+          saved_millis = millis();
+          break;
       }
 
       shr16_set_led(1 << 2 * 4);

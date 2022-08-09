@@ -33,7 +33,7 @@
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 
 
-//1 - PULLEY  
+//1 - PULLEY
 //2 - SELECTOR
 //3 - IDLER
 typedef enum {
@@ -90,13 +90,13 @@ extern TMC2209Stepper idler;
 #ifdef TMC2130 // Hardware SPI
 extern TMC2130Stepper pulley;
 extern TMC2130Stepper selector;
-extern TMC2130Stepper idler;  
+extern TMC2130Stepper idler;
 #endif
 
 #ifdef TMC5160 // Hardware SPI
 extern TMC5160Stepper pulley;
 extern TMC5160Stepper selector;
-extern TMC5160Stepper idler; 
+extern TMC5160Stepper idler;
 #endif
 
 uint16_t tmc_read_sg(TMC2209Stepper &st);
@@ -119,7 +119,7 @@ void tmc_init_axis(TMC2209Stepper &st, AXIS axis, TMC_MODE mode);
 #endif
 #ifdef TMC2130
 void tmc_init_axis(TMC2130Stepper &st, AXIS axis, TMC_MODE mode);
-#endif 
+#endif
 #ifdef TMC5160
 void tmc_init_axis(TMC5160Stepper &st, AXIS axis, TMC_MODE mode);
 #endif

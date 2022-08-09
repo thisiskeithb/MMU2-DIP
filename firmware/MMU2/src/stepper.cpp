@@ -147,7 +147,7 @@ void home()
 
   shr16_set_led(1 << 2 * (4-active_extruder));
 }
- 
+
 
 void move_proportional(int _idler, int _selector)
 {
@@ -168,9 +168,9 @@ void move_proportional(int _idler, int _selector)
       if (_idler > 0) { idler_step_pin_set(); }
     }
     if (_selector > 0) { selector_step_pin_set(); }
-    
+
     asm("nop");
-    
+
     if (_idler_pos >= 1)
     {
       if (_idler > 0) { idler_step_pin_reset(); _idler--;  }
@@ -236,7 +236,7 @@ int set_idler_direction(int _steps)
   _steps = _steps * -1;
   set_idler_dir_down();
   }
-  else 
+  else
   {
   set_idler_dir_up();
   }

@@ -15,7 +15,7 @@ void shr16_init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-  /**SPI2 GPIO Configuration    
+  /**SPI2 GPIO Configuration
   PB13     ------> SPI2_SCK  595SHCP
   PB15     ------> SPI2_MOSI 595DS
   */

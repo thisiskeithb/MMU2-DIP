@@ -128,7 +128,7 @@ void signal_ok_after_load_failure()
 bool filament_presence_signaler()
 {
   if (digitalRead(FIL_RUNOUT) == FILAMENT_SENSOR_INVERTING)
-  {  
+  {
     signal_filament_present();
     return true;
   }
@@ -270,7 +270,7 @@ void setup(void)
   }
 
   tmc_init(HOMING_MODE);
-  
+
   uint8_t filament;
   if (FilamentLoaded::get(filament))
   {
@@ -509,9 +509,9 @@ void process_commands()
       else
       {
         printf_P("0ok\n");
-      }    
       }
-      
+      }
+
     }
     else if (sscanf(line, PSTR("S%d"), &value) > 0)
     {
@@ -580,4 +580,3 @@ void process_commands()
   { //nothing received
   }
 }
-

@@ -23,4 +23,3 @@ void set_pulley_dir_push();
 void move_proportional(int _idler, int _selector);
 
 #endif //STEPPER_H
-

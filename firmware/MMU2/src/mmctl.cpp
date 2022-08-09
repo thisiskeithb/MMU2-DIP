@@ -18,9 +18,9 @@
 //so mmu;
 //! Keeps track of selected filament. It is used for LED signalization and it is backed up to permanent storage
 //! so MMU can unload filament after power loss.
-int active_extruder = 0;            
+int active_extruder = 0;
 //! Keeps track of filament crossing selector. Selector can not be moved if filament crosses it.
-bool isFilamentLoaded = false;        
+bool isFilamentLoaded = false;
 
 //! Number of pulley steps to eject and un-eject filament
 static const int eject_steps = 2500;
@@ -36,17 +36,17 @@ static const int eject_steps = 2500;
 //! @retval false Selector is not probably aligned on FINDA ,FINDA was not switched ON
 bool feed_filament(bool timeout)
 {
-	bool loaded = false;
-	const uint_least8_t finda_limit = 10;
+  bool loaded = false;
+  const uint_least8_t finda_limit = 10;
 
-	motion_engage_idler();
-	set_pulley_dir_push();
-  
-	{
-	  uint_least8_t blinker = 0;
-	  uint_least8_t button_blanking = 0;
-	  const uint_least8_t button_blanking_limit = 11;
-	  uint_least8_t finda_triggers = 0;
+  motion_engage_idler();
+  set_pulley_dir_push();
+
+  {
+    uint_least8_t blinker = 0;
+    uint_least8_t button_blanking = 0;
+    const uint_least8_t button_blanking_limit = 11;
+    uint_least8_t finda_triggers = 0;
 
     for (unsigned int steps = 0; !timeout || (steps < 1500); ++steps)
     {
@@ -76,24 +76,24 @@ bool feed_filament(bool timeout)
       }
       delayMicroseconds(4000);
     }
-	}
+  }
 
-	if (loaded)
-	{
-		// unload to PTFE tube
-		set_pulley_dir_pull();
-		for (int i = 600 + finda_limit; i > 0; i--)
-		{
-			do_pulley_step();
-			delayMicroseconds(3000);
-		}
-	}
+  if (loaded)
+  {
+    // unload to PTFE tube
+    set_pulley_dir_pull();
+    for (int i = 600 + finda_limit; i > 0; i--)
+    {
+      do_pulley_step();
+      delayMicroseconds(3000);
+    }
+  }
 
-	motion_disengage_idler();
+  motion_disengage_idler();
   tmc_disable_axis(AX_PUL);
-	shr16_set_led(1 << 2 * (4 - active_extruder));
+  shr16_set_led(1 << 2 * (4 - active_extruder));
 
-	return loaded;
+  return loaded;
 }
 
 //! @brief Try to resolve non-loaded filamnt to selector
@@ -121,10 +121,10 @@ void resolve_failed_loading(){
           motion_set_idler_selector(active_extruder);
           if(feed_filament(true)){resolved = true;}
         }
-        
+
         if(resolved){
           motion_set_idler_selector(active_extruder);
-          motion_engage_idler();          
+          motion_engage_idler();
           exit = true;
         }
       break;
@@ -134,7 +134,7 @@ void resolve_failed_loading(){
           signal_ok_after_load_failure();}
         else{
           signal_load_failure();}
-        
+
       break;
     }
   }
@@ -150,9 +150,9 @@ void resolve_failed_loading(){
 //! @param new_extruder Filament to be selected
 void switch_extruder_withSensor(int new_extruder)
 {
-	shr16_set_led(2 << 2 * (4 - active_extruder));
+  shr16_set_led(2 << 2 * (4 - active_extruder));
 
-	active_extruder = new_extruder;
+  active_extruder = new_extruder;
 
   if (isFilamentLoaded)
   {
@@ -168,8 +168,8 @@ void switch_extruder_withSensor(int new_extruder)
     load_filament_withSensor();
   }
 
-	shr16_set_led(0x000);
-	shr16_set_led(1 << 2 * (4 - active_extruder));
+  shr16_set_led(0x000);
+  shr16_set_led(1 << 2 * (4 - active_extruder));
 }
 
 //! @brief Select filament
@@ -180,14 +180,14 @@ void switch_extruder_withSensor(int new_extruder)
 //! @param new_extruder Filament to be selected
 void select_extruder(int new_extruder)
 {
-	shr16_set_led(2 << 2 * (4 - active_extruder));
+  shr16_set_led(2 << 2 * (4 - active_extruder));
 
-	active_extruder = new_extruder;
+  active_extruder = new_extruder;
 
   motion_set_idler_selector((new_extruder < EXTRUDERS) ? new_extruder : (EXTRUDERS - 1) , new_extruder);
 
-	shr16_set_led(0x000);
-	shr16_set_led(1 << 2 * (4 - active_extruder));
+  shr16_set_led(0x000);
+  shr16_set_led(1 << 2 * (4 - active_extruder));
 }
 
 //! @brief cut filament
@@ -393,7 +393,7 @@ void load_filament_withSensor(bool disengageIdler)
   } while (digitalRead(FIL_RUNOUT) != FILAMENT_SENSOR_INVERTING && _loadSteps < 1500); // adc[0];
 
   // filament did not arrived at FINDA, let's try to correct that
-  if (digitalRead(FIL_RUNOUT) != FILAMENT_SENSOR_INVERTING)                
+  if (digitalRead(FIL_RUNOUT) != FILAMENT_SENSOR_INVERTING)
   {
     for (int i = 6; i > 0; i--)
     {

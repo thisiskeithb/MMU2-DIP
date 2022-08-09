@@ -104,7 +104,7 @@ void motion_engage_idler()
   s_idler_engaged = true;
   park_idler(true);
   // check_idler_drive_error();
-}   
+}
 
 void motion_disengage_idler()
 {
@@ -139,7 +139,7 @@ static void unload_to_finda()
       // if (delay > 330 && (NORMAL_MODE == tmc_mode)) delay -= 1;
     }
     delayMicroseconds(delay);
-    
+
     if (digitalRead(FIL_RUNOUT) != FILAMENT_SENSOR_INVERTING) _endstop_hit++;
 
   }

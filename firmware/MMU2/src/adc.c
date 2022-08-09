@@ -6,14 +6,14 @@ __IO uint16_t adc_val;
 void adc_init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  DMA_HandleTypeDef hdma_adc = {0}; 
+  DMA_HandleTypeDef hdma_adc = {0};
   ADC_HandleTypeDef hadc = {0};
   ADC_ChannelConfTypeDef sConfig = {0};
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_DMA1_CLK_ENABLE();
-  __HAL_RCC_ADC1_CLK_ENABLE();                       
+  __HAL_RCC_ADC1_CLK_ENABLE();
 
-  GPIO_InitStruct.Pin  = GPIO_PIN_2;        
+  GPIO_InitStruct.Pin  = GPIO_PIN_2;
   GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
@@ -48,7 +48,7 @@ void adc_init(void)
   ///  Start calibration
   HAL_ADCEx_Calibration_Start(&hadc);
 
-  //Configure for the selected ADC regular channel to be converted. 
+  //Configure for the selected ADC regular channel to be converted.
   sConfig.Rank    = ADC_RANK_CHANNEL_NUMBER;
   sConfig.Channel = ADC_CHANNEL_2;
   HAL_ADC_ConfigChannel(&hadc, &sConfig);

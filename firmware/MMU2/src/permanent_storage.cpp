@@ -137,7 +137,7 @@ uint16_t BowdenLength::get()
       const uint8_t LengthCorrectionLegacy = eeprom_read_byte((uint32_t) & (eepromBase->eepromLengthCorrection));
       if (LengthCorrectionLegacy <= 200)
       {
-        bowdenLength = eepromLengthCorrectionBase + LengthCorrectionLegacy * 10; 
+        bowdenLength = eepromLengthCorrectionBase + LengthCorrectionLegacy * 10;
       }
     }
     if (validBowdenLen(bowdenLength))
@@ -200,13 +200,13 @@ BowdenLength::~BowdenLength()
 //! @retval 0xff Uninitialized EEPROM or no 2 values agrees
 uint8_t FilamentLoaded::getStatus()
 {
-  if (eeprom_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[0])) == 
+  if (eeprom_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[0])) ==
     eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[1])))
     return eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[0]));
-  if (eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[0])) == 
+  if (eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[0])) ==
     eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[2])))
     return eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[0]));
-  if (eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[1])) == 
+  if (eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[1])) ==
     eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[2])))
     return eeprom_buffered_read_byte((uint32_t) & (eepromBase->eepromFilamentStatus[1]));
   return 0xff;
